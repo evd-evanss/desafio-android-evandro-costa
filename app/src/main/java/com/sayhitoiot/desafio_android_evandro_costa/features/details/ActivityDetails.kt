@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
@@ -114,7 +115,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
         textHeader?.text = getString(R.string.details_subtitle_most_valuable)
-        textTitleHQ?.text = comicsEntity.title.toUpperCase(Locale.ROOT)
+        textTitleHQ?.text = comicsEntity.title?.toUpperCase(Locale.ROOT)
         textPrice?.text = "U$ ${comicsEntity.price}"
         buttonBack?.setOnClickListener { presenter.buttonBackTapped() }
         textDescriptionHQ?.text = comicsEntity.description?.toUpperCase(Locale.ROOT)
@@ -135,6 +136,10 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
                     Log.d("errorOnLoad", "error onLoading: $e")
                 }
             })
+    }
+
+    override fun showError(messageError: String) {
+        Toast.makeText(this, messageError, Toast.LENGTH_LONG).show()
     }
 
     private fun setAnimationGone(view: View) {

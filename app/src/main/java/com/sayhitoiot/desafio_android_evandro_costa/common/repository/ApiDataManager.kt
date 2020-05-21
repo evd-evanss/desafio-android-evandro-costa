@@ -73,7 +73,7 @@ class ApiDataManager: InteractToApi {
         val hash = getMd5(ts)
         characterId ?: return
 
-        serviceComics.getDetailsHQ(characterId.toInt(), ts, Constants.PUBLIC_KEY, hash)
+        serviceComics.getDetailsHQ(characterId.toInt(), ts, Constants.PUBLIC_KEY, true, hash)
             .enqueue(object : Callback<ResultDataComics> {
                 override fun onResponse(call: Call<ResultDataComics>, response: Response<ResultDataComics>) {
 

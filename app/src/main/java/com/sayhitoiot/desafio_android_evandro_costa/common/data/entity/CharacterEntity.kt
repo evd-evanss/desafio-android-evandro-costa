@@ -6,5 +6,5 @@ data class CharacterEntity(
     val name: String,
     val description: String,
     val id: String,
-    val thumbnail: Thumbnail
+    val thumbnail: String
 )

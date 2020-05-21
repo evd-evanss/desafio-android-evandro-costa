@@ -4,4 +4,5 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEnt
 
 interface DetailsInteractToPresenter {
     fun didFinishFetchDataOnAPI(comicsEntity: ComicsEntity)
+    fun didFinishFetchDataOnAPIWithError(messageError: String)
 }

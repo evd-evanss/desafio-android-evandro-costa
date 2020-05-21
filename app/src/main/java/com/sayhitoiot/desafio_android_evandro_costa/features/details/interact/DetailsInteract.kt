@@ -1,7 +1,7 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.details.interact
 
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetComicsCallback
-import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toHttps
+import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataManager
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEntity
@@ -31,8 +31,23 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
 
                 results.addAll(marvelResponse.data.results)
 
-                val comicsEntity: ComicsEntity = fetchComicsByMaxPrice(results)
-                presenter.didFinishFetchDataOnAPI(comicsEntity)
+                val result =
+                    fetchComicsByMaxPrice(results)
+
+                if(result != null) {
+                    ComicsEntity(
+                        title = result.description ?: "",
+                        price = result.price,
+                        description = result.description,
+                        thumbnail = result.thumbnail
+                    ).also {
+                        presenter.didFinishFetchDataOnAPI(it)
+                    }
+                } else {
+                    presenter.didFinishFetchDataOnAPIWithError("As informações sobre quadrinhos desse personagem foram removidas ou não existe!")
+                }
+
+
 
             }
 
@@ -43,23 +58,26 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
         })
     }
 
-    private fun fetchComicsByMaxPrice(results: MutableList<Result>): ComicsEntity {
+    private fun fetchComicsByMaxPrice(results: MutableList<Result>): ComicsEntity? {
+
+        if(results.isEmpty()) {
+            return null
+        }
+
         val pricesFloat = mutableListOf<Float>()
         val prices = mutableListOf<Price>()
 
         results.forEach {
             prices.addAll(it.prices)
-            var price: String = ""
-            prices.forEach { price1 ->
-                price = price1.price
-            }
+        }
 
+        for ((cont, it) in results.withIndex()) {
             comicsList.add(
                 ComicsEntity(
                     title = it.title,
                     description = it.description,
-                    price = price,
-                    thumbnail = "".toHttps(it.thumbnail.path , it.thumbnail.extension)
+                    price = prices[cont].price.toFloat().toString(),
+                    thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
                 )
             )
         }
@@ -69,11 +87,17 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
             pricesFloat.add(it.price.toFloat())
         }
 
-        val max = pricesFloat.max()
+        val max: String? = pricesFloat.max().toString().trim()
 
-        return comicsList.first {
-            it.price?.toFloat() == max
+        comicsList.forEach {
+            it.description ?: ""
+            it.price ?: ""
+            it.title ?: ""
+            it.thumbnail ?: ""
         }
 
+        return comicsList.filter {
+            it.price == max
+        }.first()
     }
 }

@@ -7,6 +7,7 @@ import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contr
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.characters.ReturnData
+import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 
 class InteractList(private val presenter: InteractListToPresenter) : InteractListToInteract{
 
@@ -29,7 +30,7 @@ class InteractList(private val presenter: InteractListToPresenter) : InteractLis
                             name = it.name,
                             description = it.description,
                             id = it.id,
-                            thumbnail = it.thumbnail
+                            thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
                         )
                     )
                 }
