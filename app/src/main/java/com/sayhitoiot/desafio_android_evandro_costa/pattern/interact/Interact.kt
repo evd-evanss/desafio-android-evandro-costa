@@ -1,0 +1,10 @@
+package com.sayhitoiot.desafio_android_evandro_costa.pattern.interact
+
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToPresenter
+import com.sayhitoiot.desafio_android_evandro_costa.pattern.interact.contract.InteractToInteract
+import com.sayhitoiot.desafio_android_evandro_costa.pattern.interact.contract.InteractToPresenter
+
+class Interact(presenter: InteractToPresenter) : InteractToInteract {
+
+}
