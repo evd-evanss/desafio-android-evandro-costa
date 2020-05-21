@@ -24,7 +24,6 @@ import kotlinx.android.synthetic.main.activity_details.*
 import java.lang.Exception
 import java.util.*
 
-
 class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
 
     companion object{
@@ -72,7 +71,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
 
     override fun initializeViewsForDetails() {
         containerDetails = activityDetails_constraintLayout_containerDetails
-        textHeader = activityDetails_textView_header
+        textHeader = activityDetails_textView_subtitle
         textName = activityDetails_textView_name
         textDescription = activityDetails_textView_description
         imageHero = activityDetails_imageView_thumbnail
@@ -97,7 +96,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         setAnimationGone(containerHQ!!)
         setAnimationVisibility(containerDetails!!)
         progress?.hide()
-        textHeader?.text = "PERSONAGEM"
+        textHeader?.text = getString(R.string.details_subtitle_character)
         buttonBack?.setOnClickListener { super.onBackPressed() }
         textName?.text = this.name?.toUpperCase(Locale.ROOT)
         textDescription?.text = this.description?.toUpperCase(Locale.ROOT)
@@ -114,7 +113,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         progress?.show()
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
-        textHeader?.text = "REVISTA"
+        textHeader?.text = getString(R.string.details_subtitle_most_valuable)
         textTitleHQ?.text = comicsEntity.title.toUpperCase(Locale.ROOT)
         textPrice?.text = "U$ ${comicsEntity.price}"
         buttonBack?.setOnClickListener { presenter.buttonBackTapped() }
