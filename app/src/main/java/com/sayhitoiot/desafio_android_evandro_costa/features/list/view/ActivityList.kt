@@ -2,6 +2,8 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.list.view
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.Explode
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -13,6 +15,7 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.Character
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.PresenterList
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
+import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -20,6 +23,7 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
 
     private var swipeRefresh: SwipeRefreshLayout? = null
     private var recyclerView: RecyclerView? = null
+    private var progress: DilatingDotsProgressBar? = null
     private val context: Context? = this
 
     private val presenter: PresenterListToPresenter by lazy {
@@ -42,6 +46,8 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
     override fun initializeViews() {
         swipeRefresh = activityList_swipeRefresh
         recyclerView = activityList_recyclerView
+        progress = activityList_dilatingDotsProgressBar
+        progress?.show()
         val layoutManager = LinearLayoutManager(this)
         layoutManager.reverseLayout = true
         layoutManager.stackFromEnd = false
@@ -59,6 +65,7 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
     }
 
     override fun didFetchCharactersOnAPI(characterList: MutableList<CharacterEntity>) {
+        progress?.hide()
         swipeRefresh?.isRefreshing = false
         recyclerView?.setItemViewCacheSize(characterList.size)
         adapter.updateList(characterList)

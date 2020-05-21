@@ -58,6 +58,22 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
+        android:id="@+id/activityList_dilatingDotsProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:color="@color/colorRedBlack"
+        android:radius="3.5sp"
+        app:dd_animationDuration="500"
+        app:dd_horizontalSpacing="10dp"
+        app:dd_numDots="3"
+        app:dd_scaleMultiplier="1.5"
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="@+id/activityList_swipeRefresh"
+        app:layout_constraintStart_toStartOf="@+id/activityList_swipeRefresh"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"

@@ -15,7 +15,7 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
     }
 
     override fun onCreate() {
-        view.initializeViews()
+        view.initializeViewsForDetails()
     }
 
     override fun buttonDetailsTapped(characterId: String?) {
