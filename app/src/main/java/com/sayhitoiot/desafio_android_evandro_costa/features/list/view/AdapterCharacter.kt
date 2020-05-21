@@ -64,9 +64,8 @@ class AdapterCharacter(
 
         fun bind(result: CharacterEntity){
 
-            Log.d("image", result.thumbnail.path)
-            val path = (result.thumbnail.path + "." + result.thumbnail.extension)
-                .replace("http", "https")
+            Log.d("image", result.thumbnail)
+            val path = (result.thumbnail)
 
             context?.let {
                 Picasso

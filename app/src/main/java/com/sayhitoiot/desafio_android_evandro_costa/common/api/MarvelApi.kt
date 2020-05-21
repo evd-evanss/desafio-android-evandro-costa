@@ -20,6 +20,7 @@ interface MarvelApi{
     fun getDetailsHQ(@Path("characterid") characterId: Int,
                      @Query("ts") ts: String, // timestamp
                      @Query("apikey") apiKey: String,
+                     @Query("hasDigitalIssue") hasDigitalIssue: Boolean,
                      @Query("hash")hash: String): Call<ResultDataComics>
 
 }

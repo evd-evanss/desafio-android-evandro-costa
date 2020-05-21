@@ -8,5 +8,6 @@ interface DetailsPresenterToView {
     fun renderCharacterDetails()
     fun updateAdapter(comicsEntity: ComicsEntity)
     fun renderComicsMostExpensive(comicsEntity: ComicsEntity)
+    fun showError(messageError: String)
 
 }

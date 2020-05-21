@@ -31,6 +31,10 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
         view.updateAdapter(comicsEntity)
     }
 
+    override fun didFinishFetchDataOnAPIWithError(messageError: String) {
+        view.showError(messageError)
+    }
+
     override fun didFinishInitialize() {
         view.renderCharacterDetails()
     }
