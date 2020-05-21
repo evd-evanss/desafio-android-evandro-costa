@@ -4,7 +4,7 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEnt
 
 interface DetailsPresenterToView {
 
-    fun initializeViews()
+    fun initializeViewsForDetails()
     fun renderCharacterDetails()
     fun updateAdapter(comicsEntity: ComicsEntity)
     fun renderComicsMostExpensive(comicsEntity: ComicsEntity)
