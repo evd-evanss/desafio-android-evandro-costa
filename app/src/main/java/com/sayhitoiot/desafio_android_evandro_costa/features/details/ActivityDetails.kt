@@ -14,11 +14,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.DetailsPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToView
 import com.squareup.picasso.Callback
+import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.activity_details.*
@@ -78,7 +79,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         imageHero = activityDetails_imageView_thumbnail
         buttonHQmostValuable = activityDetails_materialButton_hq
         buttonHQmostValuable?.setOnClickListener {
-            presenter.buttonDetailsTapped(characterId)
+            characterId?.let { it1 -> presenter.buttonDetailsTapped(it1) }
         }
         buttonBack = activityDetails_imageView_back
         buttonBack?.setOnClickListener {
@@ -86,7 +87,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         }
         progress = activityDetail_dilatingDotsProgressBar
         containerHQ = activityDetails_constraintLayout_containerHQ
-        textTitleHQ = activityDetails_textView_nameHQ
+        textTitleHQ = activityDetails_textView_titleHQ
         textDescriptionHQ = activityDetails_textView_descriptionHQ
         imageHeroHQ = activityDetails_imageView_thumbnailHQ
         textPrice = activityDetails_textView_price
@@ -106,26 +107,54 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
             .load((this.path))
             .centerCrop()
             .fit()
-            .error(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_error)
             .into(imageHero)
     }
 
-    override fun renderComicsMostExpensive(comicsEntity: ComicsEntity) {
+    override fun renderComicsMostExpensive(
+        comicsEntity: ComicsEntity,
+        priceMostExpensive: String
+    ) {
         progress?.show()
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
         textHeader?.text = getString(R.string.details_subtitle_most_valuable)
-        textTitleHQ?.text = comicsEntity.title?.toUpperCase(Locale.ROOT)
-        textPrice?.text = "U$ ${comicsEntity.price}"
+        textTitleHQ?.text = comicsEntity.title.toUpperCase(Locale.ROOT)
+        textPrice?.text = "U$ $priceMostExpensive"
         buttonBack?.setOnClickListener { presenter.buttonBackTapped() }
-        textDescriptionHQ?.text = comicsEntity.description?.toUpperCase(Locale.ROOT)
+        textDescriptionHQ?.text = comicsEntity.description.toUpperCase(Locale.ROOT)
 
         Picasso
             .get()
             .load(comicsEntity.thumbnail)
             .centerCrop()
             .fit()
-            .error(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_error)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .into(imageHeroHQ, object : Callback{
+                override fun onSuccess() {
+                    progress?.hide()
+                }
+
+                override fun onError(e: Exception?) {
+                    progress?.hide()
+                    Log.d("errorOnLoad", "error onLoading: $e")
+                }
+            })
+    }
+
+    override fun renderImageComicsWithPath(path: String) {
+
+    }
+
+    override fun renderImageComicsWithDrawable(drawable: Int) {
+        Picasso
+            .get()
+            .load(drawable)
+            .centerCrop()
+            .fit()
+            .error(R.drawable.ic_error)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
             .into(imageHeroHQ, object : Callback{
                 override fun onSuccess() {
                     progress?.hide()
@@ -159,7 +188,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
     private fun setAnimationVisibility(view: View) {
         view.animate()
             .translationY(view.height.toFloat())
-            .rotation(7200f)
+            .rotation(720f)
             .alpha(1.0f)
             .translationY(0f)
             .setDuration(300)
@@ -169,17 +198,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
                     view.visibility = VISIBLE
                 }
             })
+
     }
 
-    override fun updateAdapter(comicsEntity: ComicsEntity) {
-        textName?.text = comicsEntity.title
-        textDescription?.text = comicsEntity.description?.toUpperCase()
-        Picasso
-            .get()
-            .load((comicsEntity.thumbnail))
-            .centerCrop()
-            .fit()
-            .error(R.drawable.ic_launcher_background)
-            .into(imageHero)
-    }
 }

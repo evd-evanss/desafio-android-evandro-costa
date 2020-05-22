@@ -3,7 +3,7 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.InteractList
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToPresenter
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 
@@ -25,7 +25,7 @@ class PresenterList(private val view: PresenterListToView) : PresenterListToPres
         view.initializeViews()
     }
 
-    override fun fetchCharactersOnAPI() {
+    override fun fetchCharacters() {
         nextPagination()
     }
 
@@ -36,12 +36,18 @@ class PresenterList(private val view: PresenterListToView) : PresenterListToPres
     private fun nextPagination() {
         limit += PAGES
         when {
-            limit <= 100 -> interact.fetchCharactersOnAPI(offSet, limit)
+            limit <= 100 -> interact.fetchCharacters(offSet, limit)
             else -> view.showMessageEnd(MESSAGE_END)
         }
     }
 
-    override fun didFetchCharactersOnAPI(characterEntityList: MutableList<CharacterEntity>) {
-        view.didFetchCharactersOnAPI(characterEntityList)
+    override fun didFetchCharacters(characterEntityyList: MutableList<CharacterEntity>) {
+        view.didFetchCharactersOnAPI(characterEntityyList)
     }
+
+    override fun didFetchCharactersError(error: String) {
+        view.renderViewsForError()
+        limit = 0
+    }
+
 }

@@ -2,6 +2,6 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.con
 
 interface PresenterListToPresenter {
     fun onCreate()
-    fun fetchCharactersOnAPI()
+    fun fetchCharacters()
     fun onRefreshScroll()
 }

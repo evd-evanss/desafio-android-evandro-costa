@@ -1,7 +1,8 @@
 package com.sayhitoiot.desafio_android_evandro_costa.common.api
 
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.ResultDataComics
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.characters.ReturnData
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -20,7 +21,6 @@ interface MarvelApi{
     fun getDetailsHQ(@Path("characterid") characterId: Int,
                      @Query("ts") ts: String, // timestamp
                      @Query("apikey") apiKey: String,
-                     @Query("hasDigitalIssue") hasDigitalIssue: Boolean,
                      @Query("hash")hash: String): Call<ResultDataComics>
 
 }

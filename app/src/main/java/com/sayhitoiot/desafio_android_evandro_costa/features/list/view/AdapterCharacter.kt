@@ -15,10 +15,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.ActivityDetails
+import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.item_character.view.*
+import java.lang.Exception
 
 
 class AdapterCharacter(
@@ -60,21 +63,15 @@ class AdapterCharacter(
         private var textName: TextView = itemView.character_textView_name
         private var imageThumbnail: ImageView = itemView.character_imageView_thumbnail
         private var buttonMoreDetails: MaterialButton = itemView.character_materialButton_moreDetails
-        private var container: ConstraintLayout = itemView.container_items
+        private var progress: DilatingDotsProgressBar = itemView.character_dilatingDotsProgressBar
 
         fun bind(result: CharacterEntity){
 
             Log.d("image", result.thumbnail)
             val path = (result.thumbnail)
 
-            context?.let {
-                Picasso
-                    .get()
-                    .load(path)
-                    .centerCrop()
-                    .fit()
-                    .error(R.drawable.ic_launcher_background)
-                    .into(imageThumbnail)
+            if(!path.contains("image_not_available")) {
+                setImageByPath(path)
             }
 
             textName.text = result.name
@@ -87,8 +84,30 @@ class AdapterCharacter(
                     path
                 ) }
 
-            setAnimation(itemView, adapterPosition)
+            setAnimation(itemView)
 
+        }
+
+        private fun setImageByPath(path: String) {
+            context?.let {
+                progress.show()
+                Picasso
+                    .get()
+                    .load(path)
+                    .centerCrop()
+                    .fit()
+                    .error(R.drawable.ic_launcher_background)
+                    .into(imageThumbnail, object : Callback{
+                        override fun onSuccess() {
+                            progress.hide()
+                        }
+
+                        override fun onError(e: Exception?) {
+                            progress.hide()
+                        }
+
+                    })
+            }
         }
 
         private fun startDetailsActivity(
@@ -102,14 +121,15 @@ class AdapterCharacter(
             intent.putExtra("characterId", characterId)
             intent.putExtra("name", name)
             intent.putExtra("description", description)
-            intent.putExtra("path", path)
+            if(path.contains("image_not_available")) {
+                intent.putExtra("path", "https://")
+            } else {
+                intent.putExtra("path", path)
+            }
             context?.startActivity(intent)
         }
 
-        private fun setAnimation(
-            viewToAnimate: View,
-            position: Int
-        ) {
+        private fun setAnimation(viewToAnimate: View) {
             val animation: Animation =
                 AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
             viewToAnimate.startAnimation(animation)
