@@ -4,4 +4,5 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.Characte
 
 interface InteractListToPresenter {
     fun didFetchCharacters(characterEntityyList: MutableList<CharacterEntity>)
+    fun didFetchCharactersError(error: String)
 }

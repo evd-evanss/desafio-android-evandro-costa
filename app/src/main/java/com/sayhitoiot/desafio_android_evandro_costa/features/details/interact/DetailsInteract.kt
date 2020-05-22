@@ -4,10 +4,8 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetComicsCallba
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataManager
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.Price
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.Result
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.ResultDataComics
-import com.sayhitoiot.desafio_android_evandro_costa.common.realm.RealmDB
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.Result
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToPresenter
@@ -32,7 +30,6 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
     }
 
     private fun fetchDataOnAPI(characterId: String) {
-
         repository.getDetailsHQ(characterId, object: OnGetComicsCallback {
             override fun onSuccess(marvelResponse: ResultDataComics) {
 

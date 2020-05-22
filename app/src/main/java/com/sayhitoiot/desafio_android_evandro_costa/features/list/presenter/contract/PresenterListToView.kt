@@ -6,4 +6,5 @@ interface PresenterListToView {
     fun initializeViews()
     fun didFetchCharactersOnAPI(characterList: MutableList<CharacterEntity>)
     fun showMessageEnd(message: String)
+    fun renderViewsForError()
 }

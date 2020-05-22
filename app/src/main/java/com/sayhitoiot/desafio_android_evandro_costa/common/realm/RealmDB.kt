@@ -4,24 +4,29 @@ import android.content.Context
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 object RealmDB {
 
-    const val DEFAULT_INTEGER = 0
     const val DEFAULT_STRING = ""
-    const val DEFAULT_BOOLEAN = false
 
     fun configureRealm(context: Context) {
         Realm.init(context)
 
         val mRealmConfiguration = RealmConfiguration.Builder()
-            .name("smnow-teste-database.realm")
-            .schemaVersion(0L)
+            .name("marvel-database.realm")
+            .schemaVersion(1)
             .build()
 
-        Realm.getInstance(mRealmConfiguration)
         Realm.setDefaultConfiguration(mRealmConfiguration)
+        Realm.getInstance(mRealmConfiguration)
 
+    }
+
+    fun terminate() {
+        Realm.getDefaultInstance().close()
     }
 
 

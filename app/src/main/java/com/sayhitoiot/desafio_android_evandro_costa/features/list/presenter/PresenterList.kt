@@ -44,4 +44,10 @@ class PresenterList(private val view: PresenterListToView) : PresenterListToPres
     override fun didFetchCharacters(characterEntityyList: MutableList<CharacterEntity>) {
         view.didFetchCharactersOnAPI(characterEntityyList)
     }
+
+    override fun didFetchCharactersError(error: String) {
+        view.renderViewsForError()
+        limit = 0
+    }
+
 }

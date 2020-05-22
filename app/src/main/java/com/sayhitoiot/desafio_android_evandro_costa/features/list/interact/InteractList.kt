@@ -5,9 +5,10 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataMan
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToInteract
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.characters.ReturnData
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnData
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
+import okhttp3.ResponseBody
 
 class InteractList(private val presenter: InteractListToPresenter) : InteractListToInteract{
 
@@ -46,7 +47,7 @@ class InteractList(private val presenter: InteractListToPresenter) : InteractLis
             }
 
             override fun onError() {
-
+                presenter.didFetchCharactersError("Falha ao tentar sincronizar, tente novamente mais tarde")
             }
 
         })

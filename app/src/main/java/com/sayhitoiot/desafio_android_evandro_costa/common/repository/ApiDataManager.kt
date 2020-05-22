@@ -7,9 +7,9 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.api.MarvelApi
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetComicsCallback
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetMarvelCallback
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.RetrofitClient
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.Result
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.comics.ResultDataComics
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.characters.ReturnData
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.Result
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnData
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -53,17 +53,14 @@ class ApiDataManager: InteractToApi {
                             Log.e("Response", " response null")
                         }
 
-                    } else {
-                        callback.onError()
-                        Log.e("Response", response.raw().networkResponse.toString())
                     }
 
                 }
 
                 override fun onFailure(call: Call<ReturnData>, t: Throwable) {
-                    callback.onError()
                     t.printStackTrace()
-                    Log.e("Response", javaClass.simpleName + " not response 2 " + t)
+                    callback.onError()
+                    Log.d("Response", "$t")
                 }
             })
     }
@@ -101,7 +98,6 @@ class ApiDataManager: InteractToApi {
                 override fun onFailure(call: Call<ResultDataComics>, t: Throwable) {
                     callback.onError()
                     t.printStackTrace()
-                    Log.e("Response", javaClass.simpleName + " not response 2 " + t)
                 }
             })
     }
