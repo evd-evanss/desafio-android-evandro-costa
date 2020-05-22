@@ -1,6 +1,7 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter
 
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEntity
+import android.util.Log
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.DetailsInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToPresenter
@@ -18,7 +19,7 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
         view.initializeViewsForDetails()
     }
 
-    override fun buttonDetailsTapped(characterId: String?) {
+    override fun buttonDetailsTapped(characterId: String) {
         interact.fetchComicsMostExpensive(characterId)
     }
 
@@ -26,9 +27,16 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
         view.renderCharacterDetails()
     }
 
-    override fun didFinishFetchDataOnAPI(comicsEntity: ComicsEntity) {
-        view.renderComicsMostExpensive(comicsEntity)
-        view.updateAdapter(comicsEntity)
+    override fun didFinishFetchData(comicsEntity: ComicsEntity) {
+        view.renderComicsMostExpensive(comicsEntity, getPriceMostExpensive(comicsEntity))
+    }
+
+    private fun getPriceMostExpensive(comicsEntity: ComicsEntity) : String {
+
+        comicsEntity.price.forEach {
+            Log.d(TAG, "preço: $it")
+        }
+        return comicsEntity.price.max().toString()
     }
 
     override fun didFinishFetchDataOnAPIWithError(messageError: String) {
@@ -37,5 +45,9 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
 
     override fun didFinishInitialize() {
         view.renderCharacterDetails()
+    }
+
+    companion object{
+        const val TAG = "details-presenter"
     }
 }

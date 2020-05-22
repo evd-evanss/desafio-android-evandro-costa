@@ -1,8 +1,6 @@
 package com.sayhitoiot.desafio_android_evandro_costa.common.data.entity
 
-import java.io.Serializable
-
-data class ComicsEntity(
+data class ComicsEntityy(
     var title: String?,
     val price: String?,
     var description: String?,

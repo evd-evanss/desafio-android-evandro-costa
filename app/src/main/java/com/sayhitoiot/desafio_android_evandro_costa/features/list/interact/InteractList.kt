@@ -5,37 +5,43 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataMan
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToInteract
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.common.data.model.characters.ReturnData
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 
 class InteractList(private val presenter: InteractListToPresenter) : InteractListToInteract{
 
     private val repository: InteractToApi = ApiDataManager()
 
-    override fun fetchCharactersOnAPI(offset: Int, limit: Int) {
-        getCharacters(offset, limit)
+    companion object {
+        const val ALL = 100
     }
 
-    private fun getCharacters(offSet: Int, limit: Int) {
-        repository.getCharacter(offSet, limit, object : OnGetMarvelCallback{
+    override fun fetchCharacters(offset: Int, limit: Int) {
+        val characterList = CharacterEntity.getAll()
+        if(characterList.isEmpty()) {
+            getCharactersOnAPI(offset, limit)
+        } else {
+            presenter.didFetchCharacters(characterList.subList(0,limit))
+        }
+    }
+
+    private fun getCharactersOnAPI(offSet: Int, limit: Int) {
+        repository.getCharacter(offSet, ALL, object : OnGetMarvelCallback{
             override fun onSuccess(marvelResponse: ReturnData) {
 
                 val results = marvelResponse.data.results
-                val characterEntityList: MutableList<CharacterEntity> = mutableListOf()
 
                 results.forEach {
-                    characterEntityList.add(
-                        CharacterEntity(
-                            name = it.name,
-                            description = it.description,
-                            id = it.id,
-                            thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
-                        )
+                    CharacterEntity.create(
+                        name = it.name,
+                        description = it.description,
+                        id = it.id,
+                        thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
                     )
                 }
-
-                presenter.didFetchCharactersOnAPI(characterEntityList)
+                val characterList = CharacterEntity.getAll()
+                presenter.didFetchCharacters(characterList.subList(0,limit))
 
             }
 

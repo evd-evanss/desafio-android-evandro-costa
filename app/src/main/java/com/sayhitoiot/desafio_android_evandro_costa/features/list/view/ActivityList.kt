@@ -2,8 +2,6 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.list.view
 
 import android.content.Context
 import android.os.Bundle
-import android.transition.Explode
-import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -11,7 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.RealmDB
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.PresenterList
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
@@ -40,7 +39,12 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        configureDataBase()
         presenter.onCreate()
+    }
+
+    private fun configureDataBase() {
+        RealmDB.configureRealm(applicationContext)
     }
 
     override fun initializeViews() {
@@ -54,7 +58,7 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
         recyclerView?.layoutManager = layoutManager
         recyclerView?.itemAnimator = DefaultItemAnimator()
         recyclerView?.adapter = adapter
-        presenter.fetchCharactersOnAPI()
+        presenter.fetchCharacters()
         actionRefresh()
     }
 

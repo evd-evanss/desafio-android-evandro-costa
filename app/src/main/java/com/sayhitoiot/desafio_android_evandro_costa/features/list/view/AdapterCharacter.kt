@@ -15,7 +15,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntityy
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.ActivityDetails
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.item_character.view.*
