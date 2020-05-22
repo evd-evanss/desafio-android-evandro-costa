@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/marvel_background"
     tools:context=".features.list.view.ActivityList">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/marvel_regular"
+            android:fontFamily="@font/marvel_bold"
             android:text="LISTA DE PERSONAGENS"
             android:textColor="@color/colorWhite"
             android:textSize="24sp"
@@ -48,6 +49,30 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ImageView
+        android:id="@+id/activityList_imageView_error"
+        android:layout_width="337dp"
+        android:layout_height="192dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_error_network"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
+
+    <TextView
+        android:id="@+id/activityList_text_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/marvel_bold"
+        android:text="Erro de conexão ou falha ao tentar buscar dados. \n Tente novamente mais tarde"
+        android:textAlignment="center"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/activityList_swipeRefresh"
+        app:layout_constraintTop_toTopOf="@+id/activityList_imageView_error" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/activityList_swipeRefresh"
@@ -90,7 +115,6 @@
         app:layout_constraintStart_toStartOf="@+id/activityList_swipeRefresh"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
@@ -103,29 +127,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/activityList_imageView_error"
-        android:layout_width="411dp"
-        android:layout_height="0dp"
-        android:src="@drawable/ic_error_network"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
-    <TextView
-        android:id="@+id/activityList_text_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/marvel_bold"
-        android:text="Erro de conexão ou falha ao tentar buscar dados. \n Tente novamente mais tarde"
-        android:textAlignment="center"
-        android:textColor="@color/colorWhite"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/activityList_swipeRefresh"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -11,5 +11,6 @@ interface DetailsPresenterToView {
         priceMostExpensive: String
     )
     fun showError(messageError: String)
-
+    fun renderImageComicsWithPath(path: String)
+    fun renderImageComicsWithDrawable(drawable: Int)
 }

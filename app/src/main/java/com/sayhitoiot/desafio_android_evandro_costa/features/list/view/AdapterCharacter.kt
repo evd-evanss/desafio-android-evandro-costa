@@ -34,6 +34,8 @@ class AdapterCharacter(
         const val TAG = "adapter-character"
     }
 
+    private var lastPosition = -1
+
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
         holder.itemView.clearAnimation()
@@ -65,26 +67,11 @@ class AdapterCharacter(
 
         fun bind(result: CharacterEntity){
 
+            Log.d("image", result.thumbnail)
             val path = (result.thumbnail)
 
-            context?.let {
-                progress.show()
-                Picasso
-                    .get()
-                    .load(path)
-                    .centerCrop()
-                    .fit()
-                    .error(R.drawable.ic_launcher_background)
-                    .into(imageThumbnail, object: Callback{
-                        override fun onSuccess() {
-                            progress.hide()
-                        }
-
-                        override fun onError(e: Exception?) {
-                            progress.hide()
-                        }
-
-                    })
+            if(!path.contains("image_not_available")) {
+                setImageByPath(path)
             }
 
             textName.text = result.name
@@ -101,6 +88,28 @@ class AdapterCharacter(
 
         }
 
+        private fun setImageByPath(path: String) {
+            context?.let {
+                progress.show()
+                Picasso
+                    .get()
+                    .load(path)
+                    .centerCrop()
+                    .fit()
+                    .error(R.drawable.ic_launcher_background)
+                    .into(imageThumbnail, object : Callback{
+                        override fun onSuccess() {
+                            progress.hide()
+                        }
+
+                        override fun onError(e: Exception?) {
+                            progress.hide()
+                        }
+
+                    })
+            }
+        }
+
         private fun startDetailsActivity(
             characterId: String,
             name: String,
@@ -112,7 +121,11 @@ class AdapterCharacter(
             intent.putExtra("characterId", characterId)
             intent.putExtra("name", name)
             intent.putExtra("description", description)
-            intent.putExtra("path", path)
+            if(path.contains("image_not_available")) {
+                intent.putExtra("path", "https://")
+            } else {
+                intent.putExtra("path", path)
+            }
             context?.startActivity(intent)
         }
 

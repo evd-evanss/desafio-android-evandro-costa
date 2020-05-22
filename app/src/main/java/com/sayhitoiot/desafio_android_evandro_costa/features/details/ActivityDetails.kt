@@ -87,7 +87,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         }
         progress = activityDetail_dilatingDotsProgressBar
         containerHQ = activityDetails_constraintLayout_containerHQ
-        textTitleHQ = activityDetails_textView_nameHQ
+        textTitleHQ = activityDetails_textView_titleHQ
         textDescriptionHQ = activityDetails_textView_descriptionHQ
         imageHeroHQ = activityDetails_imageView_thumbnailHQ
         textPrice = activityDetails_textView_price
@@ -107,7 +107,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
             .load((this.path))
             .centerCrop()
             .fit()
-            .error(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_error)
             .into(imageHero)
     }
 
@@ -119,17 +119,41 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
         textHeader?.text = getString(R.string.details_subtitle_most_valuable)
-        textTitleHQ?.text = comicsEntity.title?.toUpperCase(Locale.ROOT)
+        textTitleHQ?.text = comicsEntity.title.toUpperCase(Locale.ROOT)
         textPrice?.text = "U$ $priceMostExpensive"
         buttonBack?.setOnClickListener { presenter.buttonBackTapped() }
-        textDescriptionHQ?.text = comicsEntity.description?.toUpperCase(Locale.ROOT)
+        textDescriptionHQ?.text = comicsEntity.description.toUpperCase(Locale.ROOT)
 
         Picasso
             .get()
             .load(comicsEntity.thumbnail)
             .centerCrop()
             .fit()
-            .error(R.drawable.ic_launcher_background)
+            .error(R.drawable.ic_error)
+            .memoryPolicy(MemoryPolicy.NO_CACHE)
+            .into(imageHeroHQ, object : Callback{
+                override fun onSuccess() {
+                    progress?.hide()
+                }
+
+                override fun onError(e: Exception?) {
+                    progress?.hide()
+                    Log.d("errorOnLoad", "error onLoading: $e")
+                }
+            })
+    }
+
+    override fun renderImageComicsWithPath(path: String) {
+
+    }
+
+    override fun renderImageComicsWithDrawable(drawable: Int) {
+        Picasso
+            .get()
+            .load(drawable)
+            .centerCrop()
+            .fit()
+            .error(R.drawable.ic_error)
             .memoryPolicy(MemoryPolicy.NO_CACHE)
             .into(imageHeroHQ, object : Callback{
                 override fun onSuccess() {

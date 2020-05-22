@@ -13,13 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.realm.RealmDB
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.PresenterList
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_list.*
 
 
 class ActivityList : AppCompatActivity(), PresenterListToView{
@@ -44,7 +43,7 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_list)
         presenter.onCreate()
     }
 
