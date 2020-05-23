@@ -4,4 +4,8 @@ interface PresenterListToPresenter {
     fun onCreate()
     fun fetchCharacters()
     fun onRefreshScroll()
+    fun imageMenuTapped()
+    fun linkedinButtonTapped()
+    fun whatsAppButtonTapped()
+    fun emailButtonTapped()
 }

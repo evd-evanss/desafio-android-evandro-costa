@@ -1,6 +1,8 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.list.view
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -8,10 +10,13 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.PresenterList
@@ -19,6 +24,7 @@ import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.cont
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.activity_list.*
+import kotlinx.android.synthetic.main.layout_developer.*
 
 
 class ActivityList : AppCompatActivity(), PresenterListToView{
@@ -29,6 +35,14 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
     private val context: Context? = this
     private var textError: TextView? = null
     private var imageError: ImageView? = null
+    private var imageMenu: ImageView? = null
+    private var bottomSheetDeveloper: BottomSheetBehavior<ConstraintLayout>? = null
+    private var linkedinButton: ImageView? = null
+    private var whatsAppButton: ImageView? = null
+    private var emailButton: ImageView? = null
+
+    override val state: Int?
+        get() = bottomSheetDeveloper?.state
 
     private val presenter: PresenterListToPresenter by lazy {
         PresenterList(this)
@@ -60,11 +74,54 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
         recyclerView?.layoutManager = layoutManager
         recyclerView?.itemAnimator = DefaultItemAnimator()
         recyclerView?.adapter = adapter
+        imageMenu = activityList_imageView_menu
+        bottomSheetDeveloper = BottomSheetBehavior.from(constraintLayout_bottom_sheet_developer)
+        linkedinButton = layout_developer_imageView_linkedin
+        whatsAppButton = layout_developer_imageView_whatsapp
+        emailButton = layout_developer_imageView_email
         presenter.fetchCharacters()
-        actionRefresh()
+        actionMenu()
+        actionLinkedin()
+        actionWhatsApp()
+        actionEmail()
+        actionRequestPagination()
     }
 
-    private fun actionRefresh() {
+    private fun actionMenu() {
+        imageMenu?.setOnClickListener { presenter.imageMenuTapped() }
+    }
+
+    private fun actionLinkedin() {
+        linkedinButton?.setOnClickListener { presenter.linkedinButtonTapped() }
+    }
+
+    override fun openProfileUserLinkedin(profileLinkedin: String) {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(profileLinkedin))
+        startActivity(intent)
+    }
+
+    private fun actionWhatsApp() {
+        whatsAppButton?.setOnClickListener { presenter.whatsAppButtonTapped() }
+    }
+
+    override fun openWhatsApp(celphone: String) {
+        val intent =
+            Intent(Intent.ACTION_VIEW, Uri.parse(celphone))
+        startActivity(intent)
+    }
+
+    private fun actionEmail() {
+        emailButton?.setOnClickListener { presenter.emailButtonTapped() }
+    }
+
+    override fun openEmail(email: String) {
+        val intent = Intent(Intent.ACTION_SENDTO)
+        intent.data = Uri.parse("mailto:")
+        intent.putExtra(Intent.EXTRA_EMAIL, arrayOf(email))
+        startActivity(Intent.createChooser(intent, "Enviar e-mail por..."))
+    }
+
+    private fun actionRequestPagination() {
         swipeRefresh?.setOnRefreshListener {
             presenter.onRefreshScroll()
         }
@@ -95,5 +152,9 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
         imageError?.visibility = VISIBLE
         swipeRefresh?.isRefreshing = false
         progress?.hide()
+    }
+
+    override fun setVisibilityForLayoutDeveloper(state: Int) {
+        bottomSheetDeveloper?.state = state
     }
 }

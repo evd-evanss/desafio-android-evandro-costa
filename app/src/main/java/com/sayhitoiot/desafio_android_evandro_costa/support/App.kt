@@ -1,4 +1,4 @@
-package com.sayhitoiot.desafio_android_evandro_costa
+package com.sayhitoiot.desafio_android_evandro_costa.support
 
 import android.app.Application
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.RealmDB

@@ -5,8 +5,7 @@ import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -41,9 +40,10 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
     private var textName: TextView? = null
     private var textDescription: TextView? = null
     private var imageHero: ImageView? = null
-    private var buttonHQmostValuable: MaterialButton? = null
+    private var buttonHqMostValuable: MaterialButton? = null
     private var buttonBack: ImageView? = null
     private var progress: DilatingDotsProgressBar? = null
+    private var progressFetchComics: DilatingDotsProgressBar? = null
 
     private var containerHQ: ConstraintLayout? = null
     private var textTitleHQ: TextView? = null
@@ -77,9 +77,12 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         textName = activityDetails_textView_name
         textDescription = activityDetails_textView_description
         imageHero = activityDetails_imageView_thumbnail
-        buttonHQmostValuable = activityDetails_materialButton_hq
-        buttonHQmostValuable?.setOnClickListener {
-            characterId?.let { it1 -> presenter.buttonDetailsTapped(it1) }
+        buttonHqMostValuable = activityDetails_materialButton_hq
+        progressFetchComics = activityDetail_dilatingDotsProgressBar_fetchComics
+        buttonHqMostValuable?.setOnClickListener {
+            buttonHqMostValuable?.visibility = INVISIBLE
+            progressFetchComics?.show()
+            characterId?.let { it -> presenter.buttonDetailsTapped(it) }
         }
         buttonBack = activityDetails_imageView_back
         buttonBack?.setOnClickListener {
@@ -99,6 +102,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         setAnimationVisibility(containerDetails!!)
         progress?.hide()
         textHeader?.text = getString(R.string.details_subtitle_character)
+        buttonHqMostValuable?.visibility = VISIBLE
         buttonBack?.setOnClickListener { super.onBackPressed() }
         textName?.text = this.name?.toUpperCase(Locale.ROOT)
         textDescription?.text = this.description?.toUpperCase(Locale.ROOT)
@@ -115,6 +119,8 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         comicsEntity: ComicsEntity,
         priceMostExpensive: String
     ) {
+        buttonHqMostValuable?.visibility = GONE
+        progressFetchComics?.hide()
         progress?.show()
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
@@ -143,11 +149,9 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
             })
     }
 
-    override fun renderImageComicsWithPath(path: String) {
-
-    }
-
     override fun renderImageComicsWithDrawable(drawable: Int) {
+        buttonHqMostValuable?.visibility = GONE
+        progressFetchComics?.hide()
         Picasso
             .get()
             .load(drawable)
@@ -172,6 +176,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
     }
 
     private fun setAnimationGone(view: View) {
+
         view.animate()
             .translationY(view.height.toFloat())
             .alpha(0.0f)

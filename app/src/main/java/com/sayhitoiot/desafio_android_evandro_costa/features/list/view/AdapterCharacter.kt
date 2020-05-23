@@ -8,10 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
+import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
@@ -21,7 +21,6 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.item_character.view.*
-import java.lang.Exception
 
 
 class AdapterCharacter(
@@ -33,8 +32,6 @@ class AdapterCharacter(
     companion object {
         const val TAG = "adapter-character"
     }
-
-    private var lastPosition = -1
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
@@ -96,7 +93,7 @@ class AdapterCharacter(
                     .load(path)
                     .centerCrop()
                     .fit()
-                    .error(R.drawable.ic_launcher_background)
+                    .error(R.drawable.ic_error)
                     .into(imageThumbnail, object : Callback{
                         override fun onSuccess() {
                             progress.hide()
@@ -110,7 +107,7 @@ class AdapterCharacter(
             }
         }
 
-        private fun startDetailsActivity(
+        private fun startDetailsActivity (
             characterId: String,
             name: String,
             description: String,
@@ -134,7 +131,6 @@ class AdapterCharacter(
                 AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
             viewToAnimate.startAnimation(animation)
         }
-
 
     }
 }

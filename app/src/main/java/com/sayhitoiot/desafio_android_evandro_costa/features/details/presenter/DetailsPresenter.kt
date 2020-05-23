@@ -1,7 +1,5 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter
 
-import android.util.Log
-import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.DetailsInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract

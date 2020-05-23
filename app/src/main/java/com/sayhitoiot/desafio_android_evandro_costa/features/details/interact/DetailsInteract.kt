@@ -10,22 +10,27 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEn
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToPresenter
 import io.realm.RealmList
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 class DetailsInteract(private val presenter: DetailsInteractToPresenter) : DetailsInteractToInteract  {
 
     companion object{
         const val TAG = "details-interact"
+        const val ERROR = "As informações sobre quadrinhos desse personagem foram removidas ou não existe!"
     }
 
     private val repository: InteractToApi = ApiDataManager()
     private val results: MutableList<Result> = mutableListOf()
 
     override fun fetchComicsMostExpensive(characterId: String) {
-        val comicsList = ComicsEntity.getComicById(characterId)
-        if(comicsList == null) {
+        val comic = ComicsEntity.getComicById(characterId.trim())
+        if(comic == null) {
             fetchDataOnAPI(characterId)
         } else {
-            ComicsEntity.getComicById(characterId)?.let { presenter.didFinishFetchData(it) }
+            presenter.didFinishFetchData(comic)
         }
     }
 
@@ -35,13 +40,11 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
 
                 results.addAll(marvelResponse.data.results)
 
-                val result =
-                    fetchComicsByMaxPrice(results, characterId)
-
+                val result = fetchComicsByMaxPrice(results, characterId)
                 if(result != null) {
                     presenter.didFinishFetchData(result)
                 } else {
-                    presenter.didFinishFetchDataOnAPIWithError("As informações sobre quadrinhos desse personagem foram removidas ou não existe!")
+                    presenter.didFinishFetchDataOnAPIWithError(ERROR)
                 }
 
             }
@@ -73,6 +76,7 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
 
 
         results.forEach {
+
             ComicsEntity.create (
                 id = characterId,
                 title = it.title,
@@ -80,6 +84,7 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
                 price = listPrices,
                 thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
             )
+
         }
 
         return ComicsEntity.getComicByMostValuable(characterId)
