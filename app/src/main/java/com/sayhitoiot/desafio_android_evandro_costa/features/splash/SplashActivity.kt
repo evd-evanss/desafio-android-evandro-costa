@@ -7,6 +7,10 @@ import android.os.Handler
 import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.view.ActivityList
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,4 +26,5 @@ class SplashActivity : AppCompatActivity() {
             )
         }
     }
+
 }

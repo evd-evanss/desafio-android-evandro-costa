@@ -1,12 +1,11 @@
-package com.sayhitoiot.desafio_android_evandro_costa.features.details
+package com.sayhitoiot.desafio_android_evandro_costa.features.details.view
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -18,13 +17,13 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEn
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.DetailsPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToView
-import com.squareup.picasso.Callback
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.activity_details.*
-import java.lang.Exception
 import java.util.*
+
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
 
@@ -41,9 +40,10 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
     private var textName: TextView? = null
     private var textDescription: TextView? = null
     private var imageHero: ImageView? = null
-    private var buttonHQmostValuable: MaterialButton? = null
+    private var buttonHqMostValuable: MaterialButton? = null
     private var buttonBack: ImageView? = null
     private var progress: DilatingDotsProgressBar? = null
+    private var progressFetchComics: DilatingDotsProgressBar? = null
 
     private var containerHQ: ConstraintLayout? = null
     private var textTitleHQ: TextView? = null
@@ -77,14 +77,9 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         textName = activityDetails_textView_name
         textDescription = activityDetails_textView_description
         imageHero = activityDetails_imageView_thumbnail
-        buttonHQmostValuable = activityDetails_materialButton_hq
-        buttonHQmostValuable?.setOnClickListener {
-            characterId?.let { it1 -> presenter.buttonDetailsTapped(it1) }
-        }
+        buttonHqMostValuable = activityDetails_materialButton_hq
+        progressFetchComics = activityDetail_dilatingDotsProgressBar_fetchComics
         buttonBack = activityDetails_imageView_back
-        buttonBack?.setOnClickListener {
-            presenter.buttonBackTapped()
-        }
         progress = activityDetail_dilatingDotsProgressBar
         containerHQ = activityDetails_constraintLayout_containerHQ
         textTitleHQ = activityDetails_textView_titleHQ
@@ -92,6 +87,22 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         imageHeroHQ = activityDetails_imageView_thumbnailHQ
         textPrice = activityDetails_textView_price
         presenter.didFinishInitialize()
+        actionGetHqMostValuable()
+        actionOnBackPressed()
+    }
+
+    private fun actionGetHqMostValuable() {
+        buttonHqMostValuable?.setOnClickListener {
+            buttonHqMostValuable?.visibility = INVISIBLE
+            progressFetchComics?.show()
+            characterId?.let { it -> presenter.buttonDetailsTapped(it) }
+        }
+    }
+
+    private fun actionOnBackPressed() {
+        buttonBack?.setOnClickListener {
+            presenter.buttonBackTapped()
+        }
     }
 
     override fun renderCharacterDetails() {
@@ -99,22 +110,25 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         setAnimationVisibility(containerDetails!!)
         progress?.hide()
         textHeader?.text = getString(R.string.details_subtitle_character)
+        buttonHqMostValuable?.visibility = VISIBLE
         buttonBack?.setOnClickListener { super.onBackPressed() }
         textName?.text = this.name?.toUpperCase(Locale.ROOT)
         textDescription?.text = this.description?.toUpperCase(Locale.ROOT)
-        Picasso
-            .get()
-            .load((this.path))
-            .centerCrop()
-            .fit()
-            .error(R.drawable.ic_error)
-            .into(imageHero)
+
+        ImageViewer().setImageWithUrlAndNotCache(
+            url = this.path,
+            view = imageHero,
+            progress = null
+        )
+
     }
 
     override fun renderComicsMostExpensive(
         comicsEntity: ComicsEntity,
         priceMostExpensive: String
     ) {
+        buttonHqMostValuable?.visibility = GONE
+        progressFetchComics?.hide()
         progress?.show()
         setAnimationVisibility(containerHQ!!)
         setAnimationGone(containerDetails!!)
@@ -124,54 +138,32 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
         buttonBack?.setOnClickListener { presenter.buttonBackTapped() }
         textDescriptionHQ?.text = comicsEntity.description.toUpperCase(Locale.ROOT)
 
-        Picasso
-            .get()
-            .load(comicsEntity.thumbnail)
-            .centerCrop()
-            .fit()
-            .error(R.drawable.ic_error)
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .into(imageHeroHQ, object : Callback{
-                override fun onSuccess() {
-                    progress?.hide()
-                }
-
-                override fun onError(e: Exception?) {
-                    progress?.hide()
-                    Log.d("errorOnLoad", "error onLoading: $e")
-                }
-            })
-    }
-
-    override fun renderImageComicsWithPath(path: String) {
+        ImageViewer().setImageWithUrlAndNotCache(
+            url = comicsEntity.thumbnail,
+            view = imageHeroHQ!!,
+            progress = progress
+        )
 
     }
 
-    override fun renderImageComicsWithDrawable(drawable: Int) {
-        Picasso
-            .get()
-            .load(drawable)
-            .centerCrop()
-            .fit()
-            .error(R.drawable.ic_error)
-            .memoryPolicy(MemoryPolicy.NO_CACHE)
-            .into(imageHeroHQ, object : Callback{
-                override fun onSuccess() {
-                    progress?.hide()
-                }
-
-                override fun onError(e: Exception?) {
-                    progress?.hide()
-                    Log.d("errorOnLoad", "error onLoading: $e")
-                }
-            })
+    override fun renderImageComicsWithDrawable(resource: Int) {
+        buttonHqMostValuable?.visibility = GONE
+        progressFetchComics?.hide()
+        ImageViewer().setImageWithResource(
+            resource = resource,
+            view = imageHeroHQ!!,
+            progress = progress
+        )
     }
 
     override fun showError(messageError: String) {
+        buttonHqMostValuable?.visibility = GONE
+        progressFetchComics?.hide()
         Toast.makeText(this, messageError, Toast.LENGTH_LONG).show()
     }
 
     private fun setAnimationGone(view: View) {
+
         view.animate()
             .translationY(view.height.toFloat())
             .alpha(0.0f)
@@ -183,6 +175,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
                     view.visibility = GONE
                 }
             })
+
     }
 
     private fun setAnimationVisibility(view: View) {
@@ -201,4 +194,7 @@ class ActivityDetails : AppCompatActivity() , DetailsPresenterToView{
 
     }
 
+    override fun renderPreviousView() {
+        super.onBackPressed()
+    }
 }

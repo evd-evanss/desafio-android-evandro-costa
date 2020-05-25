@@ -9,7 +9,7 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetMarvelCallba
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.RetrofitClient
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.Result
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
-import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnData
+import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnDataCharacter
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -17,11 +17,15 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-class ApiDataManager: InteractToApi {
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
+class Repository: InteractToApi {
 
     private var serviceCharacters: MarvelApi
     private var serviceComics: MarvelApi
-    private var heroesData: MutableLiveData<ReturnData> = MutableLiveData()
+    private var heroesDataCharacter: MutableLiveData<ReturnDataCharacter> = MutableLiveData()
     private var comicsData: MutableLiveData<Result> = MutableLiveData()
     private var client = RetrofitClient()
 
@@ -40,13 +44,13 @@ class ApiDataManager: InteractToApi {
         val hash = getMd5(ts)
 
         serviceCharacters.getCharacters(ts, Constants.PUBLIC_KEY, hash, limit, offset)
-            .enqueue(object : Callback<ReturnData> {
-                override fun onResponse(call: Call<ReturnData>, response: Response<ReturnData>) {
+            .enqueue(object : Callback<ReturnDataCharacter> {
+                override fun onResponse(call: Call<ReturnDataCharacter>, response: Response<ReturnDataCharacter>) {
 
                     if (response.isSuccessful){
                         if (response.body() != null){
                             Log.i("Response", response.toString())
-                            heroesData.postValue(response.body())
+                            heroesDataCharacter.postValue(response.body())
                             callback.onSuccess(response.body()!!)
                         } else {
                             callback.onError()
@@ -57,13 +61,14 @@ class ApiDataManager: InteractToApi {
 
                 }
 
-                override fun onFailure(call: Call<ReturnData>, t: Throwable) {
+                override fun onFailure(call: Call<ReturnDataCharacter>, t: Throwable) {
                     t.printStackTrace()
                     callback.onError()
                     Log.d("Response", "$t")
                 }
             })
     }
+
 
     override fun getDetailsHQ(characterId: String?, callback: OnGetComicsCallback) {
         val ts = System.currentTimeMillis().toString()

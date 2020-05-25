@@ -1,7 +1,5 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter
 
-import android.util.Log
-import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.DetailsInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
@@ -9,14 +7,25 @@ import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.co
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract.DetailsPresenterToView
 
-class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresenterToPresenter
-    , DetailsInteractToPresenter {
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
+class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresenterToPresenter,
+    DetailsInteractToPresenter {
+
+    private var stack = 0
+
+    companion object{
+        const val TAG = "details-presenter"
+    }
 
     private val interact: DetailsInteractToInteract by lazy {
         DetailsInteract(this)
     }
 
     override fun onCreate() {
+        stack = 1
         view.initializeViewsForDetails()
     }
 
@@ -25,11 +34,23 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
     }
 
     override fun buttonBackTapped() {
-        view.renderCharacterDetails()
+
+        when (stack) {
+            1 -> {
+                view.renderPreviousView()
+                stack--
+            }
+            2 -> {
+                view.renderCharacterDetails()
+                stack--
+            }
+        }
+
     }
 
     override fun didFinishFetchData(comicsEntity: ComicsEntity) {
         view.renderComicsMostExpensive(comicsEntity, getPriceMostExpensive(comicsEntity))
+        stack = 2
     }
 
     private fun getPriceMostExpensive(comicsEntity: ComicsEntity) : String {
@@ -42,9 +63,6 @@ class DetailsPresenter(private val view: DetailsPresenterToView) : DetailsPresen
 
     override fun didFinishInitialize() {
         view.renderCharacterDetails()
-    }
-
-    companion object{
-        const val TAG = "details-presenter"
+        stack = 1
     }
 }

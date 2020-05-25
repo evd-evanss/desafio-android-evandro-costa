@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container_items"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/marvel_background">
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/marvel_bold"
+            android:fontFamily="@font/marvel_regular"
             android:text="@string/details_subtitle_character"
             android:textColor="@color/colorWhite"
             android:textSize="24sp"
@@ -140,6 +139,21 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/activityDetails_textView_description"
             app:layout_constraintStart_toStartOf="@+id/activityDetails_textView_description" />
+
+        <com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
+            android:id="@+id/activityDetail_dilatingDotsProgressBar_fetchComics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:color="@color/colorRedBlack"
+            android:radius="3.5sp"
+            app:dd_animationDuration="500"
+            app:dd_horizontalSpacing="10dp"
+            app:dd_numDots="3"
+            app:dd_scaleMultiplier="1.5"
+            app:layout_constraintBottom_toBottomOf="@+id/activityDetails_materialButton_hq"
+            app:layout_constraintEnd_toEndOf="@+id/activityDetails_materialButton_hq"
+            app:layout_constraintStart_toStartOf="@+id/activityDetails_materialButton_hq"
+            app:layout_constraintTop_toBottomOf="@+id/activityDetails_textView_description" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
