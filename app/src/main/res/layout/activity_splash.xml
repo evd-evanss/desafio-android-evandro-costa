@@ -4,43 +4,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.details.ActivityDetails">
+    android:background="@color/colorRedBlack"
+    tools:context=".features.details.view.ActivityDetails">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="998dp"
-        android:layout_height="832dp"
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite"
+        android:fontFamily="@font/marvel_regular"
+        android:paddingTop="10dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="10dp"
+        android:text="@string/marvel"
+        android:textAlignment="center"
+        android:textColor="@color/colorRedBlack"
+        android:textSize="65sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/marvel_background" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
+        android:id="@+id/textView"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/marvel_regular"
-        android:text="DESAFIO ANDROID"
-        android:textColor="@color/colorWhite"
-        android:textSize="30sp"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:text='"Dados fornecidos pela Marvel. © 2014 Marvel"'
+        android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView"
-        app:layout_constraintVertical_bias="0.38" />
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/marvel_regular"
-        android:text="EVANDRO COSTA"
-        android:textColor="@color/colorWhite"
-        android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textView3"
-        app:layout_constraintStart_toStartOf="@+id/textView3"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

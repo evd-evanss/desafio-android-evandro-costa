@@ -1,12 +1,21 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.details.presenter.contract
 
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.ComicsEntity
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
+
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 interface DetailsPresenterToView {
 
-    fun initializeViews()
+    fun initializeViewsForDetails()
     fun renderCharacterDetails()
-    fun updateAdapter(comicsEntity: ComicsEntity)
-    fun renderComicsMostExpensive(comicsEntity: ComicsEntity)
+    fun renderComicsMostExpensive(
+        comicsEntity: ComicsEntity,
+        priceMostExpensive: String
+    )
+    fun showError(messageError: String)
+    fun renderImageComicsWithDrawable(resource: Int)
+    fun renderPreviousView()
 
 }

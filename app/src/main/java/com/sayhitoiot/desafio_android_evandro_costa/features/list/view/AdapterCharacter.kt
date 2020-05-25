@@ -11,15 +11,18 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
-import com.sayhitoiot.desafio_android_evandro_costa.common.data.entity.CharacterEntity
-import com.sayhitoiot.desafio_android_evandro_costa.features.details.ActivityDetails
-import com.squareup.picasso.Picasso
+import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.view.ActivityDetails
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.view.ImageViewer
+import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.item_character.view.*
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class AdapterCharacter(
     private val characterEntity: MutableList<CharacterEntity>,
@@ -30,8 +33,6 @@ class AdapterCharacter(
     companion object {
         const val TAG = "adapter-character"
     }
-
-    private var lastPosition = -1
 
     override fun onViewDetachedFromWindow(holder: ViewHolder) {
         super.onViewDetachedFromWindow(holder)
@@ -60,22 +61,15 @@ class AdapterCharacter(
         private var textName: TextView = itemView.character_textView_name
         private var imageThumbnail: ImageView = itemView.character_imageView_thumbnail
         private var buttonMoreDetails: MaterialButton = itemView.character_materialButton_moreDetails
-        private var container: ConstraintLayout = itemView.container_items
+        private var progress: DilatingDotsProgressBar = itemView.character_dilatingDotsProgressBar
 
         fun bind(result: CharacterEntity){
 
-            Log.d("image", result.thumbnail.path)
-            val path = (result.thumbnail.path + "." + result.thumbnail.extension)
-                .replace("http", "https")
+            Log.d("image", result.thumbnail)
+            val path = (result.thumbnail)
 
-            context?.let {
-                Picasso
-                    .get()
-                    .load(path)
-                    .centerCrop()
-                    .fit()
-                    .error(R.drawable.ic_launcher_background)
-                    .into(imageThumbnail)
+            if(!path.contains("image_not_available")) {
+                setImageByPath(path)
             }
 
             textName.text = result.name
@@ -86,36 +80,46 @@ class AdapterCharacter(
                     result.name,
                     result.description,
                     path
-                ) }
+                )
+            }
 
-            setAnimation(itemView, adapterPosition)
+            setAnimation(itemView)
 
         }
 
-        private fun startDetailsActivity(
+        private fun setImageByPath(path: String) {
+            context?.let {
+                ImageViewer().setImageWithUrl(
+                    url = path,
+                    view = imageThumbnail,
+                    progress = progress
+                )
+            }
+        }
+
+        private fun startDetailsActivity (
             characterId: String,
             name: String,
             description: String,
             path: String
         ) {
-            Log.d("marvel-adapter", characterId)
             val intent = Intent(context, ActivityDetails::class.java)
             intent.putExtra("characterId", characterId)
             intent.putExtra("name", name)
             intent.putExtra("description", description)
-            intent.putExtra("path", path)
+            if(path.contains("image_not_available")) {
+                intent.putExtra("path", "https://")
+            } else {
+                intent.putExtra("path", path)
+            }
             context?.startActivity(intent)
         }
 
-        private fun setAnimation(
-            viewToAnimate: View,
-            position: Int
-        ) {
+        private fun setAnimation(viewToAnimate: View) {
             val animation: Animation =
                 AnimationUtils.loadAnimation(context, R.anim.item_animation_fall_down)
             viewToAnimate.startAnimation(animation)
         }
-
 
     }
 }

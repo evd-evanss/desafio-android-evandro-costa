@@ -6,20 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/colorBlack">
+    android:background="@color/transparent">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/character_card"
-        android:layout_width="343dp"
-        android:layout_height="330dp"
+        android:layout_width="0dp"
+        android:layout_height="149dp"
         android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="#020E2E"
+        android:backgroundTint="@color/transparent"
         android:elevation="6dp"
-        card_view:cardCornerRadius="8dp"
+        card_view:cardCornerRadius="20dp"
         card_view:layout_constraintBottom_toBottomOf="parent"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
@@ -30,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:layout_margin="5dp"
             android:background="?android:attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true">
@@ -39,10 +36,13 @@
                 android:layout_width="0dp"
                 android:layout_height="50dp"
                 android:background="@color/colorYellow"
+                android:ellipsize="end"
                 android:fontFamily="@font/marvel_bold"
-                android:gravity="center"
+                android:gravity="center|start"
+                android:maxLines="3"
+                android:paddingStart="20dp"
                 android:textColor="@android:color/primary_text_light"
-                android:textSize="24sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintLeft_toLeftOf="parent"
@@ -55,24 +55,43 @@
                 android:id="@+id/character_imageView_thumbnail"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                card_view:layout_constraintBottom_toTopOf="@+id/character_materialButton_moreDetails"
+                android:src="@drawable/ic_error"
+                card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/character_textView_name"
-                tools:ignore="ContentDescription"
-                tools:srcCompat="@tools:sample/avatars" />
+                tools:ignore="ContentDescription" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/character_materialButton_moreDetails"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="48dp"
+                android:layout_marginEnd="2dp"
+                android:backgroundTint="@color/colorGreen"
                 android:fontFamily="@font/marvel_regular"
                 android:text="@string/more_details"
                 android:textColor="@color/colorWhite"
-                android:textSize="18sp"
+                android:textSize="12sp"
+                card_view:icon="@drawable/ic_arrow_forward_black_24dp"
+                card_view:iconGravity="textEnd"
+                card_view:iconTint="@color/colorWhite"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent" />
+
+            <com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
+                android:id="@+id/character_dilatingDotsProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:color="@color/colorYellow"
+                android:radius="3.5sp"
+                card_view:dd_animationDuration="500"
+                card_view:dd_horizontalSpacing="10dp"
+                card_view:dd_numDots="3"
+                card_view:dd_scaleMultiplier="1.5"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toStartOf="parent" />
+                card_view:layout_constraintStart_toStartOf="@+id/character_imageView_thumbnail"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
