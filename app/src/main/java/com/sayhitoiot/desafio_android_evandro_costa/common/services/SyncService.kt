@@ -1,22 +1,21 @@
 package com.sayhitoiot.desafio_android_evandro_costa.common.services
 
 import android.util.Log
-import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetComicsCallback
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetMarvelCallback
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.ReturnDataCharacter
-import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
-import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEntity
-import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataManager
+import com.sayhitoiot.desafio_android_evandro_costa.common.repository.Repository
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.InteractList
-import io.realm.RealmList
-import kotlinx.coroutines.GlobalScope
+
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class SyncService {
 
-    private val repository: InteractToApi = ApiDataManager()
+    private val repository: InteractToApi = Repository()
 
     companion object {
         const val TAG = "sync-service"
@@ -41,7 +40,7 @@ class SyncService {
                         name = it.name,
                         description = it.description,
                         id = it.id,
-                        thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
+                        thumbnail = toUrl(it.thumbnail.path, it.thumbnail.extension)
                     )
                 }
 

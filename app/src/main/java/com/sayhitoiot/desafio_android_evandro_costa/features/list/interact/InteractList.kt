@@ -1,7 +1,7 @@
 package com.sayhitoiot.desafio_android_evandro_costa.features.list.interact
 
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetMarvelCallback
-import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataManager
+import com.sayhitoiot.desafio_android_evandro_costa.common.repository.Repository
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.interact.contract.InteractListToInteract
@@ -9,9 +9,13 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.characters.
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class InteractList(private val presenter: InteractListToPresenter) : InteractListToInteract{
 
-    private val repository: InteractToApi = ApiDataManager()
+    private val repository: InteractToApi = Repository()
 
     companion object {
         const val ALL = 100
@@ -37,7 +41,7 @@ class InteractList(private val presenter: InteractListToPresenter) : InteractLis
                         name = it.name,
                         description = it.description,
                         id = it.id,
-                        thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
+                        thumbnail = toUrl(it.thumbnail.path, it.thumbnail.extension)
                     )
                 }
                 val characterList = CharacterEntity.getAll()

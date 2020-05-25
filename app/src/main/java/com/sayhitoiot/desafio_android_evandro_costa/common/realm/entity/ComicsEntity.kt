@@ -6,6 +6,10 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.model.ComicsRea
 import io.realm.Realm
 import io.realm.RealmList
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class ComicsEntity (
     val id: String?,
     val title: String,
@@ -14,7 +18,7 @@ class ComicsEntity (
     val thumbnail: String
 ) {
 
-    constructor(comicsRealm: ComicsRealm) : this(
+    constructor(comicsRealm: ComicsRealm) : this (
         id = comicsRealm.id,
         title = comicsRealm.title,
         price = comicsRealm.price,

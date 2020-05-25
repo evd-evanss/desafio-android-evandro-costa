@@ -5,15 +5,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorRedBlack"
-    tools:context=".features.details.ActivityDetails">
+    tools:context=".features.details.view.ActivityDetails">
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="209dp"
-        android:layout_height="86dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:background="@color/colorWhite"
         android:fontFamily="@font/marvel_regular"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        android:paddingBottom="10dp"
         android:text="@string/marvel"
         android:textAlignment="center"
         android:textColor="@color/colorRedBlack"
@@ -22,5 +25,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@android:color/black"
+        android:gravity="center"
+        android:text='"Dados fornecidos pela Marvel. © 2014 Marvel"'
+        android:textColor="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

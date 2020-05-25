@@ -3,6 +3,10 @@ package com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.model.CharacterRealm
 import io.realm.Realm
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class CharacterEntity (
     val name: String,
     val description: String,
@@ -36,19 +40,6 @@ class CharacterEntity (
             characterModel.description = description
             characterModel.id = id
             characterModel.thumbnail = thumbnail
-
-            realm.commitTransaction()
-            realm.close()
-        }
-
-
-
-        fun delete() {
-            val realm = Realm.getDefaultInstance()
-
-            realm.beginTransaction()
-
-            realm.delete(CharacterRealm::class.java)
 
             realm.commitTransaction()
             realm.close()

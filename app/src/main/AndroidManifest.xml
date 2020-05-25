@@ -20,8 +20,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.price.ActivityDetailsWithValue" />
-        <activity android:name=".features.details.ActivityDetails" />
+        <activity android:name=".features.details.view.ActivityDetails" />
         <activity android:name=".features.list.view.ActivityList"/>
     </application>
 

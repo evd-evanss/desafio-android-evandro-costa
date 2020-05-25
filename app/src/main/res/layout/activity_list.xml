@@ -110,7 +110,7 @@
             android:id="@+id/activityList_swipeRefresh"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
@@ -143,23 +143,10 @@
             app:dd_horizontalSpacing="10dp"
             app:dd_numDots="3"
             app:dd_scaleMultiplier="1.5"
-            app:layout_constraintBottom_toTopOf="@+id/textView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/activityList_swipeRefresh"
             app:layout_constraintStart_toStartOf="@+id/activityList_swipeRefresh"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/black"
-            android:gravity="center"
-            android:text='"Dados fornecidos pela Marvel. © 2014 Marvel"'
-            android:textColor="@android:color/white"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -2,7 +2,7 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.details.interact
 
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.OnGetComicsCallback
 import com.sayhitoiot.desafio_android_evandro_costa.common.extensions.toUrl
-import com.sayhitoiot.desafio_android_evandro_costa.common.repository.ApiDataManager
+import com.sayhitoiot.desafio_android_evandro_costa.common.repository.Repository
 import com.sayhitoiot.desafio_android_evandro_costa.common.repository.InteractToApi
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.Result
 import com.sayhitoiot.desafio_android_evandro_costa.common.api.model.comics.ResultDataComics
@@ -10,10 +10,10 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.ComicsEn
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToInteract
 import com.sayhitoiot.desafio_android_evandro_costa.features.details.interact.contract.DetailsInteractToPresenter
 import io.realm.RealmList
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
+
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class DetailsInteract(private val presenter: DetailsInteractToPresenter) : DetailsInteractToInteract  {
 
@@ -22,7 +22,7 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
         const val ERROR = "As informações sobre quadrinhos desse personagem foram removidas ou não existe!"
     }
 
-    private val repository: InteractToApi = ApiDataManager()
+    private val repository: InteractToApi = Repository()
     private val results: MutableList<Result> = mutableListOf()
 
     override fun fetchComicsMostExpensive(characterId: String) {
@@ -50,7 +50,7 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
             }
 
             override fun onError() {
-
+                presenter.didFinishFetchDataOnAPIWithError(ERROR)
             }
 
         })
@@ -68,12 +68,10 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
         val listPrices: RealmList<Float> = RealmList()
 
         results.forEach {
-            for ((cont, prices) in it.prices.withIndex()) {
+            for (prices in it.prices) {
                 listPrices.add(prices.price.toFloat())
             }
         }
-
-
 
         results.forEach {
 
@@ -82,7 +80,7 @@ class DetailsInteract(private val presenter: DetailsInteractToPresenter) : Detai
                 title = it.title,
                 description = it.description,
                 price = listPrices,
-                thumbnail = "".toUrl(it.thumbnail.path , it.thumbnail.extension)
+                thumbnail = toUrl(it.thumbnail.path, it.thumbnail.extension)
             )
 
         }

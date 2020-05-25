@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
-import android.widget.AbsListView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.LayoutRes
@@ -16,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
-import com.sayhitoiot.desafio_android_evandro_costa.features.details.ActivityDetails
-import com.squareup.picasso.Callback
-import com.squareup.picasso.Picasso
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.view.ActivityDetails
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.view.ImageViewer
 import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.item_character.view.*
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class AdapterCharacter(
     private val characterEntity: MutableList<CharacterEntity>,
@@ -79,7 +80,8 @@ class AdapterCharacter(
                     result.name,
                     result.description,
                     path
-                ) }
+                )
+            }
 
             setAnimation(itemView)
 
@@ -87,23 +89,11 @@ class AdapterCharacter(
 
         private fun setImageByPath(path: String) {
             context?.let {
-                progress.show()
-                Picasso
-                    .get()
-                    .load(path)
-                    .centerCrop()
-                    .fit()
-                    .error(R.drawable.ic_error)
-                    .into(imageThumbnail, object : Callback{
-                        override fun onSuccess() {
-                            progress.hide()
-                        }
-
-                        override fun onError(e: Exception?) {
-                            progress.hide()
-                        }
-
-                    })
+                ImageViewer().setImageWithUrl(
+                    url = path,
+                    view = imageThumbnail,
+                    progress = progress
+                )
             }
         }
 
@@ -113,7 +103,6 @@ class AdapterCharacter(
             description: String,
             path: String
         ) {
-            Log.d("marvel-adapter", characterId)
             val intent = Intent(context, ActivityDetails::class.java)
             intent.putExtra("characterId", characterId)
             intent.putExtra("name", name)

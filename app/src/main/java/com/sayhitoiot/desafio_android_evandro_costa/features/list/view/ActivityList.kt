@@ -14,11 +14,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.sayhitoiot.desafio_android_evandro_costa.R
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
+import com.sayhitoiot.desafio_android_evandro_costa.features.details.view.ImageViewer
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.PresenterList
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
@@ -26,6 +28,9 @@ import com.zl.reik.dilatingdotsprogressbar.DilatingDotsProgressBar
 import kotlinx.android.synthetic.main.activity_list.*
 import kotlinx.android.synthetic.main.layout_developer.*
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
 
 class ActivityList : AppCompatActivity(), PresenterListToView{
 
@@ -36,6 +41,7 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
     private var textError: TextView? = null
     private var imageError: ImageView? = null
     private var imageMenu: ImageView? = null
+    private var imagePhoto: ImageView? = null
     private var bottomSheetDeveloper: BottomSheetBehavior<ConstraintLayout>? = null
     private var linkedinButton: ImageView? = null
     private var whatsAppButton: ImageView? = null
@@ -68,17 +74,21 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
         textError = activityList_text_error
         imageError = activityList_imageView_error
         progress?.show()
-        val layoutManager = LinearLayoutManager(this)
-        layoutManager.reverseLayout = true
-        layoutManager.stackFromEnd = false
-        recyclerView?.layoutManager = layoutManager
-        recyclerView?.itemAnimator = DefaultItemAnimator()
-        recyclerView?.adapter = adapter
+        imagePhoto = imageView_Developer
+        ImageViewer().setRoundImage(this, R.drawable.ic_photo, imagePhoto)
+
         imageMenu = activityList_imageView_menu
         bottomSheetDeveloper = BottomSheetBehavior.from(constraintLayout_bottom_sheet_developer)
         linkedinButton = layout_developer_imageView_linkedin
         whatsAppButton = layout_developer_imageView_whatsapp
         emailButton = layout_developer_imageView_email
+
+        val layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        layoutManager.reverseLayout = true
+        recyclerView?.layoutManager = layoutManager
+        recyclerView?.itemAnimator = DefaultItemAnimator()
+        recyclerView?.adapter = adapter
+
         presenter.fetchCharacters()
         actionMenu()
         actionLinkedin()
@@ -95,23 +105,23 @@ class ActivityList : AppCompatActivity(), PresenterListToView{
         linkedinButton?.setOnClickListener { presenter.linkedinButtonTapped() }
     }
 
+    private fun actionWhatsApp() {
+        whatsAppButton?.setOnClickListener { presenter.whatsAppButtonTapped() }
+    }
+
+    private fun actionEmail() {
+        emailButton?.setOnClickListener { presenter.emailButtonTapped() }
+    }
+
     override fun openProfileUserLinkedin(profileLinkedin: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(profileLinkedin))
         startActivity(intent)
-    }
-
-    private fun actionWhatsApp() {
-        whatsAppButton?.setOnClickListener { presenter.whatsAppButtonTapped() }
     }
 
     override fun openWhatsApp(celphone: String) {
         val intent =
             Intent(Intent.ACTION_VIEW, Uri.parse(celphone))
         startActivity(intent)
-    }
-
-    private fun actionEmail() {
-        emailButton?.setOnClickListener { presenter.emailButtonTapped() }
     }
 
     override fun openEmail(email: String) {

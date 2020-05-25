@@ -1,5 +1,9 @@
 package com.sayhitoiot.desafio_android_evandro_costa.common.utils
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class Constants {
 
     companion object {
@@ -9,4 +13,5 @@ class Constants {
         const val END_POINT_CHARACTER = "characters"
         const val END_POINT_COMICS = "characters/{characterid}/comics"
     }
+
 }

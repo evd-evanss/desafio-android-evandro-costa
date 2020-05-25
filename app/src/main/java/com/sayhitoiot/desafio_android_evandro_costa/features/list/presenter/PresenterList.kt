@@ -7,6 +7,10 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.Characte
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToView
 import com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.contract.PresenterListToPresenter
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class PresenterList(private val view: PresenterListToView) : PresenterListToPresenter , InteractListToPresenter {
 
     private val interact: InteractListToInteract by lazy {

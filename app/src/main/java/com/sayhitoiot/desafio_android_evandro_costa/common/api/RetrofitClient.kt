@@ -5,6 +5,10 @@ import com.sayhitoiot.desafio_android_evandro_costa.common.utils.Constants.Compa
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 class RetrofitClient {
 
         val webserviceCharacters: MarvelApi by lazy {

@@ -9,6 +9,10 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 interface MarvelApi{
 
     @GET(END_POINT_CHARACTER)
@@ -26,12 +30,12 @@ interface MarvelApi{
 
 }
 
-interface OnGetMarvelCallback{
+interface OnGetMarvelCallback {
     fun onSuccess(marvelResponse: ReturnDataCharacter)
     fun onError()
 }
 
-interface OnGetComicsCallback{
+interface OnGetComicsCallback {
     fun onSuccess(marvelResponse: ResultDataComics)
     fun onError()
 }

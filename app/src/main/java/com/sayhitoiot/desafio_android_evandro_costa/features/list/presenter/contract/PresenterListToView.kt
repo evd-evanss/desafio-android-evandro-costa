@@ -2,6 +2,10 @@ package com.sayhitoiot.desafio_android_evandro_costa.features.list.presenter.con
 
 import com.sayhitoiot.desafio_android_evandro_costa.common.realm.entity.CharacterEntity
 
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
 interface PresenterListToView {
     val state: Int?
     fun initializeViews()

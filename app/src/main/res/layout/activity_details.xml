@@ -9,7 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
         android:layout_width="0dp"
-        android:layout_height="110dp"
+        android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:fontFamily="@font/marvel_bold"
+            android:fontFamily="@font/marvel_regular"
             android:text="@string/details_subtitle_character"
             android:textColor="@color/colorWhite"
             android:textSize="24sp"

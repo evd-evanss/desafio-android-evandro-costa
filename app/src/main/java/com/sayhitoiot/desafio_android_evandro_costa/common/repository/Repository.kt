@@ -17,7 +17,11 @@ import java.math.BigInteger
 import java.security.MessageDigest
 import java.security.NoSuchAlgorithmException
 
-class ApiDataManager: InteractToApi {
+/**
+ * @author Evandro Ribeiro Costa (revandro77@yahoo.com.br)
+ */
+
+class Repository: InteractToApi {
 
     private var serviceCharacters: MarvelApi
     private var serviceComics: MarvelApi
@@ -64,6 +68,7 @@ class ApiDataManager: InteractToApi {
                 }
             })
     }
+
 
     override fun getDetailsHQ(characterId: String?, callback: OnGetComicsCallback) {
         val ts = System.currentTimeMillis().toString()
